@@ -1,0 +1,20 @@
+bc == QC,731098.1,8575209.1, ..\bcs\MRR_inflow.csv   !731098.1,8575209.1
+bc header == ISOTime,FLOW,SAL,TEMP,TRACER_1,AGE,SS1,OXY,DIC,PH,CH4,SIL,AMM,NIT,FRP,FRP_ADS,DOC,POC,DON,PON,DOP,POP,GRN,GRN_IN,GRN_IP,DIA,DIA_IN,DIA_IP,CRY,CRY_IN,CRY_IP,ZOO
+bc scale == 		    1,  1,   1,       1,  1,  1,  1,  1, 1,  1,  1,  1,  1,  1,      1,  1,  1,  1,  1,  1,  1,  1,     1,     1,  1,     1,     1,   1,    1,     1,  1
+sub-type == 1
+end bc
+bc == QC,730626.2,8579142.1, ..\bcs\MRR_envRelease.csv
+bc header == ISOTime,FLOW
+bc scale == -1
+sub-type == 1
+end bc
+bc == QG, ..\bcs\MRR_seepage_md.csv
+bc header == ISOTime,FLOW
+bc scale == -0.000011574 !convert from m/d to m/s
+sub-type == 1
+end bc
+bc == QC,730729.2,8579529.1, ..\bcs\MRR_overflow.csv
+bc header == ISOTime,Overflow
+bc scale == -1
+sub-type == 1
+end bc

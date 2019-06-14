@@ -1,0 +1,174 @@
+! Swan Curvilinear Simulation
+!_________________________________________________________________
+!
+
+! COHESIVE SEDIMENT CONTROL FILE
+!_________________________________________________________________
+!sediment control file == PC_Plume_Sediment_002_test.fvm
+
+!TIME COMANDS
+!_________________________________________________________________
+time format == ISODATE
+reference time == 01/01/2001
+start time == 15/12/2011 00:00:00
+end time == 01/01/2014 00:00:00
+cfl external == 0.90
+cfl internal == 0.90
+timestep limits == 0.1, 15.
+display dt == 600.  
+
+                                                     
+! SIMULATION CONFIGURATION
+!_________________________________________________________________
+momentum mixing model == Smagorinsky
+scalar mixing model == Smagorinsky
+spherical == 0
+LONGWAVERADIATIONMODEL == 2
+SHORTWAVERADIATIONALBEDO == 0.08
+!SHORTWAVERADIATIONALBEDO == 0.15
+SHORTWAVERADIATIONBEDABSORPTION == 1.0
+BULKLATENTHEATCOEFFICIENT == 0.0020
+SHORTWAVERADIATIONEXTINCTIONCOEFFICIENTS == 0.5, 1.25, 1, 2 !2.50000,0.60000,1.50000,2.50000
+SHORTWAVERADIATIONFRACTIONS == 0.43,0.45,0.048,0.002 !0.51,0.45,0.035,0.005 
+
+include heat == 1
+include salinity == 1,1
+include temperature == 1,1
+include sediment == 0,0
+spatial order == 1,2
+
+!horizontal gradient limiter == LCD
+vertical gradient limiter == MC
+bottom drag model == ks
+equation of state == UNESCO
+
+vertical mixing model == external !parametric !constant 
+external turbulence model dir == ..\External\GOTM\
+turbulence update dt == 300
+waterqualitymodel == EXTERNAL
+external water quality model dir == ..\aed2\
+WQ update dt == 1800
+
+
+!MODEL PARAMETERS
+!_________________________________________________________________
+! display depth == 1.0e-6
+!stability limits == 15.0,15.0
+cell wet/dry depths == 2.0e-2, 2.0e-2                         ! <cells dry depth (m), cell wet depth (m)>
+!cell wet/dry depths == 5.0e-4, 1.0e-1
+g == 9.81
+latitude == -31.9555                                            ! <latitude in degree (-ve for southern Hemishpere)
+reference salinity == 35.0
+reference temperature == 18.0
+reference density == 1000.0
+density air == 1.28
+
+global bottom roughness == 0.0020                                ! <Global roughness> 
+global horizontal eddy viscosity == 0.2                         ! <eddy viscosity coefficient/s (m2/s;-)>
+global horizontal scalar diffusivity == 0.2,0.2                 ! <diffusivity; coefficient/s (m2/s;-)>
+diffusivity limiter dt == 30.                                   ! <NOT IN MANUAL>
+kinematic viscosity == 1.0e-6                                   ! <eddy viscosity value (m2/s)>
+vertical mixing parameters ==  0.01, 0.01                       !
+global vertical eddy viscosity limits == 1.0e-04, 9999. 
+global vertical scalar diffusivity limits == 1.0e-06, 9999.
+!min vertical eddy viscosity == 1.0e-4
+
+
+!GEOMETRY
+!_________________________________________________________________
+geometry 2d == ..\geo\DR_v3_LowRes.2dm
+vertical mesh type == z
+layer faces == ..\geo\Zlevels.csv 
+sigma layers == 8
+min bottom layer thickness == 0.1
+cell 3d depth == 5.0e-1
+
+
+! MATERIAL PROPERTIES
+!_________________________________________________________________
+material == 1
+  bottom roughness == 0.3
+end material
+material == 2
+  bottom roughness == 0.3
+end material
+material == 3
+  bottom roughness == 0.3
+end material
+
+!SCALAR PROPERTIES
+!_________________________________________________________________
+Ntracer == 0
+
+! INITIAL CONDITIONS
+!_________________________________________________________________
+initial water level == 0.81
+initial salinity == 20.0
+initial temperature == 18.0
+initial tracer concentration == 0.0
+
+INITIAL CONDITION 2D == ..\bcs\IC2_LowRes.csv
+!restart file == restart.rst
+!use restart file time == 1
+
+!SS1,RET,Oxy,Sil,Amm,Nit,FRP,FRP_ADS,DOC,POC,DON,PON,DOP,POP,DOCR,DONR,DOPR,CPOM,GRN,BGA,FDIAT,MDIAT,KARLO
+!initial wq concentration == 0,0,254.3,125,2,2.36,0.5,0,40,1100,25,22.9,1,1.73,350,13,3,100,10,10,10,10,10
+
+include == .\catchments.fvc
+
+!BOUNDARY CONDITIONS
+! Met______________________________________________________________
+
+bc == W10, ..\bcs\MRR_met_hourly_tuflow.csv
+  bc header == ISOTime,Wx,Wy
+  bc scale  == 1.6,1.6
+end bc
+
+bc == AIR_TEMP, ..\bcs\MRR_met_hourly_tuflow.csv
+  bc header == ISOTime,ATemp
+end bc
+
+bc == REL_HUM, ..\bcs\MRR_met_hourly_tuflow.csv
+  bc header == ISOTime,Rel_Hum
+  bc scale == 0.8
+end bc
+
+bc == SW_RAD, ..\bcs\MRR_met_hourly_tuflow.csv
+  bc header == ISOTime,Sol_Rad
+  bc scale == 0.84
+end bc
+
+bc == LW_RAD, ..\bcs\MRR_met_hourly_tuflow.csv
+  bc header == ISOTime,LW_In
+  bc scale == 0.74
+end bc
+
+bc == PRECIP, ..\bcs\MRR_met_hourly_tuflow.csv
+  bc header == ISOTime,Precip
+  bc scale == 1.3
+end bc
+
+
+!OUTPUT COMMANDS
+
+!_________________________________________________________________
+
+output dir == ../output
+output == netcdf
+output parameters == h,v,d,zb,temp,EVAP,PRECIP,wq_all,wq_diag_all
+output interval == 43200
+end output
+output == netcdf
+suffix == WQ
+output parameters == h,v,d,zb,temp,sal,EVAP,PRECIP,WQ_OXY_OXY,WQ_NIT_NIT,WQ_NIT_AMM,WQ_DIAG_TOT_TN,WQ_DIAG_TOT_TP,WQ_PHS_FRP,WQ_DIAG_PHY_TCHLA,WQ_PHY_GREEN,WQ_PHY_DIATOM,WQ_PHY_CYANO
+output interval == 7200
+end output
+output == flux
+  output interval == 86400
+end output
+output == datv
+  output parameters == h,v,w,D,Sal,Temp
+  output interval == 86400.00 
+end output
+write restart dt == 480
+Restart overwrite == 0

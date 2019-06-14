@@ -1,0 +1,37 @@
+bc == QC,720206.0,8579787.0, ..\bcs\DRR_inflow.csv
+bc header == ISOTime,FLOW,SAL,TEMP,TRACER_1,AGE,SS1,OXY,DIC,PH,CH4,SIL,AMM,NIT,FRP,FRP_ADS,DOC,POC,DON,PON,DOP,POP,GRN,GRN_IN,GRN_IP,DIA,DIA_IN,DIA_IP,CRY,CRY_IN,CRY_IP,ZOO
+bc scale == 		  0.26,  1,   1,       1,  1,  1,  1,  1, 1,  1,  1,  1,  1,  1,      1,  1,  1,  1,  1,  1,  1,  1,     1,     1,  1,     1,     1,   1,    1,     1,  1
+sub-type == 1
+end bc
+bc == QC,722403.0,8572646.0, ..\bcs\DRR_inflow.csv
+bc header == ISOTime,FLOW,SAL,TEMP,TRACER_1,AGE,SS1,OXY,DIC,PH,CH4,SIL,AMM,NIT,FRP,FRP_ADS,DOC,POC,DON,PON,DOP,POP,GRN,GRN_IN,GRN_IP,DIA,DIA_IN,DIA_IP,CRY,CRY_IN,CRY_IP,ZOO
+bc scale == 		  0.78,  1,   1,       1,  1,  1,  1,  1, 1,  1,  1,  1,  1,  1,      1,  1,  1,  1,  1,  1,  1,  1,     1,     1,  1,     1,     1,   1,    1,     1,  1
+sub-type == 1
+end bc
+bc == QC,713924.0,8573863.0, ..\bcs\DRR_inflow.csv
+bc header == ISOTime,FLOW,SAL,TEMP,TRACER_1,AGE,SS1,OXY,DIC,PH,CH4,SIL,AMM,NIT,FRP,FRP_ADS,DOC,POC,DON,PON,DOP,POP,GRN,GRN_IN,GRN_IP,DIA,DIA_IN,DIA_IP,CRY,CRY_IN,CRY_IP,ZOO
+bc scale == 		  0.26,  1,   1,       1,  1,  1,  1,  1, 1,  1,  1,  1,  1,  1,      1,  1,  1,  1,  1,  1,  1,  1,     1,     1,  1,     1,     1,   1,    1,     1,  1
+sub-type == 1
+end bc
+bc == QC,714364.0,8580774.0, ..\bcs\DRR_outflow.csv
+bc header == ISOTime,FLOW
+bc scale == -1.0
+sub-type == 1
+end bc
+bc == QC,716186.2,8580221.1, ..\bcs\DRR_envRelease.csv
+bc header == ISOTime,FLOW
+bc scale == -1
+sub-type == 1
+end bc
+bc == QG, ..\bcs\DRR_seepage_md.csv
+bc header == ISOTime,FLOW
+bc scale == -0.000011574 !convert from m/d to m/s
+sub-type == 1
+end bc
+bc == QC,714147.0,8580474.0, ..\bcs\DRR_overflow.csv
+bc header == ISOTime,Overflow
+bc scale == -1.0
+sub-type == 1
+end bc
+!bc == QN,1,5
+!end bc
